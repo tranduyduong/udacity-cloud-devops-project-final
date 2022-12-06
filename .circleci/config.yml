@@ -1,0 +1,98 @@
+version: 2.1
+
+jobs:
+  run-lint-test:
+    docker:
+      - image: python:3.7
+
+    working_directory: ~/project
+
+    steps:
+      - checkout
+
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv ~/.devops
+            source ~/.devops/bin/activate
+            make install
+            wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v2.10.0/hadolint-Linux-x86_64 &&\
+            chmod +x /bin/hadolint
+        
+      - run:
+          name: run lint
+          command: |
+            python3 -m venv ~/.devops
+            source ~/.devops/bin/activate
+            make lint
+
+  build-docker-image:
+    machine:
+      image: ubuntu-2004:2022.07.1
+    steps:
+      - checkout
+      - run:
+          name: Build application Docker image
+          command: |
+            docker build -t duongtd/udacity-final-project .
+      - run:
+          name: Push application Docker image
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push duongtd/udacity-final-project
+
+  deploy-k8s:
+    docker:
+      - image: duongtd/eks:v2
+    steps:
+      - checkout
+      - run:
+          name: Deploy K8S cluster
+          no_output_timeout: 30m
+          command: |
+            ANSIBLE_TIMEOUT=30; ansible-playbook ansible/main.yml
+
+  deploy-app:
+    docker:
+      - image: duongtd/eks:v3
+    steps:
+      - checkout
+      - run:
+          name: Deploy app on K8S cluster
+          command: |
+            # aws eks update-kubeconfig --region ap-southeast-1 --name udacity
+
+            whoami
+            ls -la
+            which kubectl
+
+            ls -la ~/.kube
+
+            # curl -o kubectl.sha256 https://s3.us-west-2.amazonaws.com/amazon-eks/1.22.6/2022-03-09/bin/linux/amd64/kubectl.sha256
+            # chmod +x ./kubectl
+            # mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+            # echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+
+            # kubectl apply -f k8s/deploy.yml
+
+workflows:
+  default:
+    jobs:
+      - run-lint-test:
+          filters:
+            branches:
+              only: [master]
+      - build-docker-image:
+          requires: [run-lint-test]
+          filters:
+            branches:
+              only: [master]
+      - deploy-k8s:
+          filters:
+            branches:
+              only: [deploy]
+      - deploy-app:
+          requires: [build-docker-image]
+          filters:
+            branches:
+              only: [master]

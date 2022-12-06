@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: udacity-final-project
+  template:
+    metadata:
+      labels:
+        app: udacity-final-project
+    spec:
+      containers:
+      - name: udacity-final-project
+        image: duongtd/udacity-final-project
+        ports:
+        - containerPort: 8000

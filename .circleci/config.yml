@@ -34,12 +34,12 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
-            docker build -t duongtd/udacity-final-project:v1 .
+            docker build -t duongtd/udacity-final-project2:v1 .
       - run:
           name: Push application Docker image
           command: |
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-            docker push duongtd/udacity-final-project:v1
+            docker push duongtd/udacity-final-project2:v1
 
   deploy-k8s:
     docker:
@@ -66,7 +66,7 @@ jobs:
             echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
             apt-get update
             apt-get install -y kubectl
-            aws eks update-kubeconfig --region ap-southeast-1 --name udacity-final-project
+            aws eks update-kubeconfig --region ap-southeast-1 --name udacity-final-project2
             # kubectl version
             kubectl apply -f k8s/deploy.yml
 

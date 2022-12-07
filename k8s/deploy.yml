@@ -8,14 +8,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: udacity-final-project2
+      app: udacity-final-project
   template:
     metadata:
       labels:
-        app: udacity-final-project2
+        app: udacity-final-project
     spec:
       containers:
-      - name: udacity-final-project2
-        image: duongtd/udacity-final-project2:v1
+      - name: udacity-final-project
+        image: duongtd/udacity-final-project:v1
         ports:
         - containerPort: 80

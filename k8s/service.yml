@@ -13,5 +13,5 @@ spec:
     protocol: TCP
     targetPort: 80
   selector:
-    app: udacity-final-project2
+    app: udacity-final-project
   type: LoadBalancer

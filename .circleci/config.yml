@@ -83,7 +83,6 @@ workflows:
             branches:
               only: [main]
       - deploy-k8s:
-          requires: [build-docker-images]
           filters:
             branches:
               only: [main]

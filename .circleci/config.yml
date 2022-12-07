@@ -85,7 +85,7 @@ workflows:
       - deploy-k8s:
           filters:
             branches:
-              only: [deployk8s]
+              only: [main]
       - deploy-app:
           requires: [build-docker-image]
           filters:

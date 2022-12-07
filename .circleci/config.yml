@@ -34,12 +34,12 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
-            docker build -t duongtd/udacity-final-project .
+            docker build -t duongtd/udacity-final-project:v1 .
       - run:
           name: Push application Docker image
           command: |
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-            docker push duongtd/udacity-final-project
+            docker push duongtd/udacity-final-project:v1
 
   deploy-k8s:
     docker:

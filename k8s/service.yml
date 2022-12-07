@@ -5,8 +5,8 @@ metadata:
   annotations:
       service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
   labels:
-    app: phuongtd-svc
-  name: phuongtd-svc
+    app: udacity-final-project
+  name: udacity-final-project
 spec:
   ports:
   - port: 80

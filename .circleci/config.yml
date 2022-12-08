@@ -60,12 +60,12 @@ jobs:
       - run:
           name: Deploy app on K8S cluster
           command: |
-            apt-get update
-            apt-get install -y ca-certificates curl
-            curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-            echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
-            apt-get update
-            apt-get install -y kubectl
+            # apt-get update
+            # apt-get install -y ca-certificates curl
+            # curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+            # echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
+            # apt-get update
+            # apt-get install -y kubectl
             aws eks update-kubeconfig --region ap-southeast-1 --name udacity-final-project
             # kubectl version
             kubectl apply -f k8s/deploy.yml

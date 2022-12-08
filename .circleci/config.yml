@@ -90,7 +90,7 @@ workflows:
       - deploy-k8s:
           filters:
             branches:
-              only: [mainx]
+              only: [main]
       - deploy-app:
           #requires: [deploy-k8s]
           filters:

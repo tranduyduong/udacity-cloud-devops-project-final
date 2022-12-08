@@ -92,7 +92,7 @@ workflows:
             branches:
               only: [mainx]
       - deploy-app:
-          #requires: [deploy-k8s]
+          requires: [build-docker-image]
           filters:
             branches:
               only: [main]
